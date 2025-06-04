@@ -10,3 +10,20 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
+
+const express = require('express');
+const request = require('request');
+const app = express();
+
+app.get('/pinetools', function(req, res) {
+  request('https://pinetools.com', function(error, response, body) {
+    // Inject custom CSS or JS
+    const modified = body.replace(
+      '</head>',
+      `<style>body { background: black !important; }</style><script>alert('Injected!');</script></head>`
+    );
+    res.send(modified);
+  });
+});
+
+app.listen(3000);
